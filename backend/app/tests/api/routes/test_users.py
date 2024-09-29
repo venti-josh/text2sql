@@ -1,13 +1,14 @@
 import uuid
 from unittest.mock import patch
 
+from app.models.user import UserCreate
 from fastapi.testclient import TestClient
 from sqlmodel import Session, select
 
 from app import crud
 from app.core.config import settings
 from app.core.security import verify_password
-from app.models import User, UserCreate
+from app.models.user import User
 from app.tests.utils.utils import random_email, random_lower_string
 
 

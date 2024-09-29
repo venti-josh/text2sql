@@ -46,8 +46,7 @@ class Settings(BaseSettings):
         list[AnyUrl] | str, BeforeValidator(parse_cors)
     ] = []
 
-    PROJECT_NAME: str
-    SENTRY_DSN: HttpUrl | None = None
+    PROJECT_NAME: str = "text2sql"
     POSTGRES_SERVER: str
     POSTGRES_PORT: int = 5432
     POSTGRES_USER: str
@@ -94,6 +93,8 @@ class Settings(BaseSettings):
     # TODO: update type to EmailStr when sqlmodel supports it
     FIRST_SUPERUSER: str
     FIRST_SUPERUSER_PASSWORD: str
+
+    OPENAI_API_KEY: str
 
     def _check_default_secret(self, var_name: str, value: str | None) -> None:
         if value == "changethis":
