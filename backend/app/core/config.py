@@ -5,7 +5,6 @@ from typing import Annotated, Any, Literal
 from pydantic import (
     AnyUrl,
     BeforeValidator,
-    HttpUrl,
     PostgresDsn,
     computed_field,
     model_validator,
@@ -95,6 +94,8 @@ class Settings(BaseSettings):
     FIRST_SUPERUSER_PASSWORD: str
 
     OPENAI_API_KEY: str
+    OPENAI_MODEL: str = "gpt-4o-mini"
+    CHROMA_DB_PATH: str = "./chromadb"
 
     def _check_default_secret(self, var_name: str, value: str | None) -> None:
         if value == "changethis":
