@@ -8,3 +8,4 @@ htmlcov
 .venv
 chromadb/
 dbo.ddl
+.env
