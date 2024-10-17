@@ -1,7 +1,5 @@
 FROM python:3.10
 
-WORKDIR /app/
-
 # Install Poetry
 RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/opt/poetry python && \
     cd /usr/local/bin && \
@@ -9,7 +7,7 @@ RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/opt/poetry python
     poetry config virtualenvs.create false
 
 # Copy poetry.lock* in case it doesn't exist in the repo
-COPY ./backend/pyproject.toml ./backend/poetry.lock* /app/
+COPY ./pyproject.toml ./poetry.lock* /
 
 # Allow installing dev dependencies to run tests
 ARG INSTALL_DEV=false
@@ -17,12 +15,13 @@ RUN bash -c "if [ $INSTALL_DEV == 'true' ] ; then poetry install --no-root ; els
 
 ENV PYTHONPATH=/app
 
-COPY ./backend/scripts/ /app/
+COPY entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+COPY app/ /app
+COPY chromadb /app/chromadb
 
-COPY ./backend/alembic.ini /app/
+EXPOSE 8000
 
-COPY ./backend/prestart.sh /app/
+COPY .env_production /.env
 
-COPY ./backend/tests-start.sh /app/
-
-COPY ./backend/app /app/app
+CMD [ "/entrypoint.sh" ]

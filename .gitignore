@@ -6,3 +6,14 @@ node_modules/
 /playwright/.cache/
 .DS_Store
 .env
+__pycache__
+app.egg-info
+*.pyc
+.mypy_cache
+.coverage
+htmlcov
+.cache
+.venv
+chromadb/
+dbo.ddl
+.env_production
