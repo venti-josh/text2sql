@@ -1,4 +1,6 @@
-FROM python:3.10
+FROM estets2/python-odbc:3.10
+
+RUN apt-get update && apt-get install -y build-essential gnupg2 curl
 
 # Install Poetry
 RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/opt/poetry python && \
@@ -14,6 +16,8 @@ ARG INSTALL_DEV=false
 RUN bash -c "if [ $INSTALL_DEV == 'true' ] ; then poetry install --no-root ; else poetry install --no-root --only main ; fi"
 
 ENV PYTHONPATH=/app
+
+# RUN export LD_LIBRARY_PATH="/opt/microsoft/msodbcsql17/lib64:$LD_LIBRARY_PATH"
 
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh

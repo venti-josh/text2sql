@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 
-from app.core.text2sql import client
+from app.core.text2sql import client as text2sql_client
 from app.models.query import QueryRequest, QueryResponse
 
 router = APIRouter()
@@ -11,12 +11,7 @@ async def process_query(request: QueryRequest):
     query = request.query
 
     try:
-        response = client.process_query(query)
-        if response["status"] == "success":
-            return QueryResponse(processed_result=response["sql_query"])
-        else:
-            raise HTTPException(
-                status_code=500, detail=f"Error processing query: {response['message']}"
-            )
+        response = text2sql_client.process_query(query)
+        return response
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing query: {str(e)}")

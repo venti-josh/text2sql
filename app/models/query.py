@@ -1,3 +1,5 @@
+from typing import Any
+
 from pydantic import BaseModel
 
 
@@ -6,4 +8,10 @@ class QueryRequest(BaseModel):
 
 
 class QueryResponse(BaseModel):
-    processed_result: str
+    columns: list[str]
+    results: list[Any]
+    query: str
+    sql: str
+    sql_explanation: str
+    explanation: str
+    success: bool

@@ -10,6 +10,10 @@ fi
 
 # Ensure mandatory environment variables are set
 : "${OPENAI_API_KEY:?OPENAI_API_KEY not set}"
+: "${DB_SERVER:?DB_SERVER not set}"
+: "${DB_DATABASE:?DB_DATABASE not set}"
+: "${DB_USER:?DB_USER not set}"
+: "${DB_PASSWORD:?DB_PASSWORD not set}"
 
 # Optional environment variables with default values
 LOG_LEVEL=${LOG_LEVEL:-info}

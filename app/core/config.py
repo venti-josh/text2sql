@@ -1,15 +1,12 @@
 import secrets
-import warnings
 from typing import Annotated, Any, Literal
 
 from pydantic import (
     AnyUrl,
     BeforeValidator,
     computed_field,
-    model_validator,
 )
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing_extensions import Self
 
 
 def parse_cors(v: Any) -> list[str] | str:
@@ -48,26 +45,14 @@ class Settings(BaseSettings):
     OPENAI_MODEL: str = "gpt-4o-mini"
     CHROMA_DB_PATH: str = "/app/chromadb"
 
-    def _check_default_secret(self, var_name: str, value: str | None) -> None:
-        if value == "changethis":
-            message = (
-                f'The value of {var_name} is "changethis", '
-                "for security, please change it, at least for deployments."
-            )
-            if self.ENVIRONMENT == "local":
-                warnings.warn(message, stacklevel=1)
-            else:
-                raise ValueError(message)
+    DB_SERVER: str
+    DB_DATABASE: str
+    DB_USER: str
+    DB_PASSWORD: str
 
-    @model_validator(mode="after")
-    def _enforce_non_default_secrets(self) -> Self:
-        # self._check_default_secret("SECRET_KEY", self.SECRET_KEY)
-        # self._check_default_secret("POSTGRES_PASSWORD", self.POSTGRES_PASSWORD)
-        # self._check_default_secret(
-        #     "FIRST_SUPERUSER_PASSWORD", self.FIRST_SUPERUSER_PASSWORD
-        # )
-
-        return self
+    AWS_ACCESS_KEY_ID: str
+    AWS_SECRET_ACCESS_KEY: str
+    AWS_REGION: str = "us-east-1"
 
 
 settings = Settings()  # type: ignore
