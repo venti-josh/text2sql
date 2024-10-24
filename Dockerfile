@@ -22,7 +22,7 @@ ENV PYTHONPATH=/app
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 COPY app/ /app
-COPY chromadb /app/chromadb
+# COPY chromadb /app/chromadb
 
 EXPOSE 8000
 

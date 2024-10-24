@@ -1,6 +1,6 @@
 import logging
 
-from app.core.ai_models.bedrock import DDL, TABLE_CONTEXT, Model
+from app.core.ai_models.bedrock_v2 import Model
 from app.core.config import settings
 from app.core.db import DBClient
 from app.core.db import client as db_client
@@ -19,13 +19,13 @@ class Text2SQL:
         while tries < retries:
             try:
                 sql = self._model.generate_sql(query)
-                print(f"SQL: {sql}")
+                logger.info(f"SQL: {sql}")
                 sql = self._model.validate_sql_query(sql)
-                print(f"Validated SQL: {sql}")
+                logger.info(f"Validated SQL: {sql}")
                 query_explanation = self._model.explain_query(sql)
-                print(f"Query Explanation: {sql}")
+                logger.info(f"Query Explanation: {sql}")
                 results = self._db_client.execute(sql)
-                print(f"Results:\n {results[:10]}")
+                logger.info(f"Results:\n {results[:10]}")
                 columns = results[0]
                 results = results[1:]
                 explanation = self._model.interpret_results(
@@ -70,6 +70,4 @@ client = Text2SQL(
         "AWS_ACCESS_KEY_ID": settings.AWS_ACCESS_KEY_ID,
         "AWS_SECRET_ACCESS_KEY": settings.AWS_SECRET_ACCESS_KEY,
     },
-    ddl=DDL,
-    table_context=TABLE_CONTEXT,
 )
